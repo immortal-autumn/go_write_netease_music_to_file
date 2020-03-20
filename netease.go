@@ -27,7 +27,12 @@ func createFile(path string) {
 }
 
 func writeFile(path, description string) {
-	_ = ioutil.WriteFile(path, []byte(description), 0644)
+	err := ioutil.WriteFile(path, []byte(description), 0644)
+	if err != nil {
+		fmt.Println("Update failed with: ", err)
+		return
+	}
+	fmt.Println("Update successfully.")
 }
 
 func main() {
@@ -52,8 +57,7 @@ func main() {
 
 	fmt.Println("Process running......")
 	for {
-		fmt.Println("Update successfully.")
-		writeFile(filepath, GetAllWindows()[handler].title)
+		go writeFile(filepath, GetAllWindows()[handler].title)
 		time.Sleep(10 * time.Second)
 	}
 }
